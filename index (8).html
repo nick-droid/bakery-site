@@ -1,0 +1,1259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cora & Crumb | Bake Shop Nairobi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brandTeal: '#00606B',
+            brandTealDark: '#004A53',
+            brandTealLight: '#E6F3F4',
+            brandCoral: '#DE5B63',
+            brandCoralHover: '#C84A52',
+            brandCream: '#FBF9F5',
+            brandCreamCard: '#F5F0EB',
+            brandText: '#1D2A2B'
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #FBF9F5; color: #1D2A2B; }
+    h1, h2, h3, h4, .font-serif { font-family: 'Playfair Display', serif; }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+  <!-- TOP ANNOUNCEMENT BAR (Full Width) -->
+  <div class="bg-brandTeal text-white text-xs py-2 w-full">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 flex justify-between items-center">
+      <span class="mx-auto sm:mx-0 font-medium tracking-wide">FREE LOCAL NAIROBI DELIVERY OVER KES 3,500 - ORDER BY 2PM FOR SAME-DAY PICKUP</span>
+      <div class="hidden sm:flex items-center space-x-6 text-xs text-teal-100 font-medium">
+        <button onclick="switchView('visit')" class="hover:underline">LOCATION</button>
+        <button onclick="switchView('visit')" class="hover:underline">FAQS</button>
+        <button onclick="switchView('celebrations')" class="hover:underline">WEDDINGS & EVENTS</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN HEADER -->
+  <header class="bg-brandCream border-b border-stone-200 sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 py-4 flex items-center justify-between">
+      
+      <!-- Left Links -->
+      <nav class="hidden md:flex items-center space-x-6 text-xs tracking-widest font-semibold uppercase">
+        <button onclick="switchView('menu')" class="hover:text-brandTeal transition">OUR MENU</button>
+        <button onclick="switchView('box')" class="hover:text-brandTeal transition">BUILD YOUR OWN BOX</button>
+      </nav>
+
+      <!-- Center Logo -->
+      <button onclick="switchView('home')" class="text-center group">
+        <h1 class="text-3xl sm:text-4xl font-serif text-brandCoral font-bold italic tracking-tight leading-none group-hover:text-brandCoralHover transition">Cora & Crumb</h1>
+        <p class="text-[10px] tracking-[0.3em] uppercase text-brandTeal font-medium mt-1">Bake Shop • Nairobi</p>
+      </button>
+
+      <!-- Right Utility Search & Basket -->
+      <div class="flex items-center space-x-4">
+        <div class="relative hidden sm:block">
+          <input type="text" id="headerSearch" onkeypress="handleHeaderSearch(event)" placeholder="Search treats..." class="bg-white border border-stone-300 text-xs rounded-full py-2 pl-8 pr-4 w-40 focus:outline-none focus:border-brandTeal">
+          <svg class="w-3.5 h-3.5 text-stone-400 absolute left-2.5 top-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+        </div>
+
+        <button onclick="toggleBasket(true)" class="flex items-center space-x-2 bg-stone-100 hover:bg-stone-200 border border-stone-200 text-stone-800 text-xs py-2 px-3.5 rounded-full transition font-semibold">
+          <svg class="w-4 h-4 text-brandTeal" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/></svg>
+          <span class="uppercase text-[11px] tracking-wider">BASKET</span>
+          <span id="cartCountBadge" class="bg-brandCoral text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center font-bold">0</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Secondary Navigation Bar -->
+    <div class="border-t border-stone-200 bg-brandCream py-2.5 px-4 overflow-x-auto hide-scrollbar">
+      <nav class="flex justify-center space-x-8 text-xs font-semibold uppercase tracking-widest text-stone-700 min-w-max mx-auto">
+        <button onclick="switchView('menu')" class="hover:text-brandTeal transition">OUR MENU</button>
+        <button onclick="switchView('box')" class="hover:text-brandTeal transition">BUILD YOUR OWN BOX</button>
+        <button onclick="switchView('celebrations')" class="hover:text-brandTeal transition">CELEBRATIONS</button>
+        <button onclick="switchView('story')" class="hover:text-brandTeal transition">OUR STORY</button>
+        <button onclick="switchView('visit')" class="hover:text-brandTeal transition">VISIT US</button>
+      </nav>
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER / VIEWS -->
+  <main class="flex-grow">
+
+    <!-- VIEW: HOME -->
+    <section id="view-home" class="view-section space-y-16 pb-16">
+      
+      <!-- Hero Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 pt-8">
+        <div class="bg-brandTeal text-white rounded-3xl overflow-hidden shadow-xl grid md:grid-cols-2 gap-8 items-center p-8 sm:p-12 relative">
+          <div class="space-y-6 max-w-lg z-10">
+            <span class="text-xs uppercase tracking-[0.25em] text-teal-200 font-semibold">Cora & Crumb Bake Shop • Nairobi</span>
+            <h2 class="text-4xl sm:text-6xl font-serif leading-tight font-bold">A cookie for every occasion.</h2>
+            <p class="text-teal-100 text-sm sm:text-base leading-relaxed">No matter what you're celebrating in Nairobi, we have a cookie for that. Small batches, real butter, and recipes Cora still writes by hand.</p>
+            <div class="flex flex-wrap gap-4 pt-2">
+              <button onclick="switchView('menu')" class="bg-brandTealLight text-brandTeal font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full hover:bg-white transition flex items-center space-x-2">
+                <span>SEND COOKIES</span>
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+              </button>
+              <button onclick="switchView('box')" class="bg-transparent border border-white text-white font-bold text-xs uppercase tracking-wider py-3.5 px-6 rounded-full hover:bg-white/10 transition">
+                TREAT YOURSELF
+              </button>
+            </div>
+          </div>
+          <div class="relative h-64 sm:h-96 rounded-2xl overflow-hidden shadow-2xl">
+            <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=1000&q=80" alt="Fresh Baked Cookies" class="w-full h-full object-cover">
+          </div>
+        </div>
+      </div>
+
+      <!-- Favorites Grid -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+        <div class="text-center space-y-2">
+          <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-semibold">HANDPICKED</span>
+          <h2 class="text-3xl sm:text-4xl font-serif font-bold text-brandText">The Favorites</h2>
+          <p class="text-xs text-stone-500 max-w-md mx-auto">We've created some unforgettable flavors over the years, but nothing hits the spot quite like these in Nairobi.</p>
+          <div class="pt-2">
+            <button onclick="switchView('menu')" class="inline-flex items-center space-x-2 text-xs font-bold uppercase tracking-wider text-brandTeal bg-brandTealLight px-5 py-2.5 rounded-full hover:bg-brandTeal hover:text-white transition">
+              <span>TRY OUR FAVORITES</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <!-- Build Your Box Promo Card -->
+          <div class="bg-brandTeal text-white p-6 rounded-2xl flex flex-col justify-between shadow-md">
+            <div>
+              <span class="text-[10px] uppercase tracking-widest text-teal-200 font-bold">PREPAID</span>
+              <h3 class="text-2xl font-serif font-bold mt-1 mb-3">Build your own box</h3>
+              <p class="text-xs text-teal-100 leading-relaxed mb-4">Create your own personalized cookie mix with any of our signature or monthly flavors.</p>
+            </div>
+            <img src="https://images.unsplash.com/photo-1618923850107-d1a234d7a73a?auto=format&fit=crop&w=600&q=80" class="rounded-xl h-36 object-cover mb-4">
+            <button onclick="switchView('box')" class="w-full bg-brandTealLight text-brandTeal text-xs font-bold py-2.5 rounded-lg hover:bg-white transition flex items-center justify-center space-x-1">
+              <span>START YOUR BOX</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+
+          <!-- Product Card 1 -->
+          <div class="bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <div class="relative rounded-xl overflow-hidden h-48 mb-3">
+                <span class="absolute top-2 left-2 bg-brandCoral text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">BEST SELLER</span>
+                <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+              </div>
+              <h4 class="font-serif font-bold text-lg">Ultimate Chocolate Chip</h4>
+              <p class="text-[11px] text-stone-500 uppercase tracking-wider mt-0.5">4 COOKIES</p>
+              <div class="flex items-center space-x-1 mt-1 text-amber-500 text-xs">
+                <span>★ 4.9</span>
+                <span class="text-stone-400 text-[10px]">(495 reviews)</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+              <span class="font-bold text-sm">KES 350</span>
+              <button onclick="addToCart('Ultimate Chocolate Chip', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+            </div>
+          </div>
+
+          <!-- Product Card 2 -->
+          <div class="bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <div class="rounded-xl overflow-hidden h-48 mb-3">
+                <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+              </div>
+              <h4 class="font-serif font-bold text-lg">Salted Caramel Cream</h4>
+              <p class="text-[11px] text-stone-500 uppercase tracking-wider mt-0.5">4 COOKIES</p>
+              <div class="flex items-center space-x-1 mt-1 text-amber-500 text-xs">
+                <span>★ 4.8</span>
+                <span class="text-stone-400 text-[10px]">(218 reviews)</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+              <span class="font-bold text-sm">KES 350</span>
+              <button onclick="addToCart('Salted Caramel Cream', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+            </div>
+          </div>
+
+          <!-- Product Card 3 -->
+          <div class="bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+            <div>
+              <div class="rounded-xl overflow-hidden h-48 mb-3">
+                <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80" class="w-full h-full object-cover">
+              </div>
+              <h4 class="font-serif font-bold text-lg">Ube Marble</h4>
+              <p class="text-[11px] text-stone-500 uppercase tracking-wider mt-0.5">4 COOKIES</p>
+              <div class="flex items-center space-x-1 mt-1 text-amber-500 text-xs">
+                <span>★ 4.8</span>
+                <span class="text-stone-400 text-[10px]">(151 reviews)</span>
+              </div>
+            </div>
+            <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+              <span class="font-bold text-sm">KES 350</span>
+              <button onclick="addToCart('Ube Marble', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Showcase Panel -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8">
+        <div class="bg-white rounded-3xl border border-stone-200 shadow-sm overflow-hidden">
+          <div class="p-6 sm:p-8 pb-0 text-center space-y-2">
+            <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-semibold">THE SHOWCASE</span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-brandText">Fresh From Our Kitchen</h2>
+            <div id="showcaseTabs" class="flex flex-wrap justify-center gap-2 pt-3"></div>
+          </div>
+          <div class="grid md:grid-cols-5 gap-6 p-6 sm:p-8 items-center">
+            <div class="md:col-span-3 relative rounded-2xl overflow-hidden h-72 sm:h-[26rem] bg-stone-100">
+              <img id="showcaseImg" src="" alt="" class="w-full h-full object-cover transition-opacity duration-300">
+              <span id="showcaseBadge" class="absolute top-4 left-4 bg-brandCoral text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1.5 rounded-full"></span>
+              <button onclick="showcaseStep(-1)" aria-label="Previous" class="absolute left-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white w-9 h-9 rounded-full shadow flex items-center justify-center text-brandTeal font-bold">&#8249;</button>
+              <button onclick="showcaseStep(1)" aria-label="Next" class="absolute right-3 top-1/2 -translate-y-1/2 bg-white/90 hover:bg-white w-9 h-9 rounded-full shadow flex items-center justify-center text-brandTeal font-bold">&#8250;</button>
+            </div>
+            <div class="md:col-span-2 space-y-4">
+              <h3 id="showcaseName" class="text-3xl font-serif font-bold text-brandText"></h3>
+              <p id="showcaseDesc" class="text-sm text-stone-600 leading-relaxed"></p>
+              <p id="showcasePrice" class="font-bold text-lg text-brandTeal"></p>
+              <div class="flex flex-wrap gap-3">
+                <button onclick="showcaseAdd()" class="bg-brandCoral hover:bg-brandCoralHover text-white text-xs font-bold uppercase tracking-wider py-3 px-5 rounded-full transition">+ ADD TO BASKET</button>
+                <button onclick="switchView('menu')" class="border border-brandTeal text-brandTeal text-xs font-bold uppercase tracking-wider py-3 px-5 rounded-full hover:bg-brandTealLight transition">SEE FULL MENU</button>
+              </div>
+              <div id="showcaseThumbs" class="flex gap-2 pt-2 overflow-x-auto hide-scrollbar"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Build Your Own Box Banner Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8">
+        <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 grid md:grid-cols-2 gap-8 items-center border border-stone-200">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1618923850107-d1a234d7a73a?auto=format&fit=crop&w=800&q=80" class="rounded-2xl shadow-lg w-full object-cover h-80">
+            <div class="absolute bottom-4 right-4 bg-white p-3 rounded-xl shadow-md border border-stone-100 text-center">
+              <p class="text-[10px] font-bold uppercase text-stone-400">ONE DOZEN BOX</p>
+              <p class="text-lg font-bold font-serif text-brandCoral">from KES 2,500</p>
+            </div>
+          </div>
+          <div class="space-y-6">
+            <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">BUILD YOUR OWN BOX</span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-brandText">Pick every cookie yourself.</h2>
+            <p class="text-stone-600 text-sm leading-relaxed">Our signature flavors, our monthly specials and the ones Cora tests on the counter — packed into one box, exactly the way you want it.</p>
+            
+            <div class="space-y-3">
+              <div class="flex items-center space-x-3 text-xs font-semibold text-stone-700">
+                <span class="w-6 h-6 rounded-full bg-brandTealLight text-brandTeal flex items-center justify-center text-[10px]">✓</span>
+                <span>01 CHOOSE A DOZEN OR TWO DOZEN</span>
+              </div>
+              <div class="flex items-center space-x-3 text-xs font-semibold text-stone-700">
+                <span class="w-6 h-6 rounded-full bg-brandTealLight text-brandTeal flex items-center justify-center text-[10px]">✓</span>
+                <span>02 MIX ANY FLAVORS YOU LIKE</span>
+              </div>
+              <div class="flex items-center space-x-3 text-xs font-semibold text-stone-700">
+                <span class="w-6 h-6 rounded-full bg-brandTealLight text-brandTeal flex items-center justify-center text-[10px]">✓</span>
+                <span>03 WE BAKE, PACK AND RIBBON IT</span>
+              </div>
+            </div>
+
+            <button onclick="switchView('box')" class="bg-brandCoral text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-full hover:bg-brandCoralHover transition flex items-center space-x-2 shadow-md">
+              <span>START YOUR BOX</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Founder Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8">
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div class="relative">
+            <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80" class="rounded-2xl shadow-xl w-full object-cover h-[420px]">
+          </div>
+          <div class="space-y-6">
+            <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">MEET CORA</span>
+            <h2 class="text-3xl sm:text-4xl font-serif font-bold text-brandText">Hi! I'm Cora, founder of Cora & Crumb.</h2>
+            <p class="text-stone-600 text-sm leading-relaxed">Every day as a child, I would come home from school to enjoy my beloved grandmother's company over a glass of milk and a fresh baked treat in Kilimani.</p>
+            <p class="text-stone-600 text-sm leading-relaxed">This daily baking ritual meant everything to me, so when we opened in Nairobi, I brought along my grandmother's carefully recorded recipes on handwritten cards.</p>
+            <button onclick="switchView('story')" class="bg-brandCoral text-white font-bold text-xs uppercase tracking-wider py-3.5 px-8 rounded-full hover:bg-brandCoralHover transition shadow-md">
+              READ MORE ABOUT US
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials Section -->
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-8">
+        <div class="text-center">
+          <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">KIND WORDS</span>
+          <h2 class="text-3xl font-serif font-bold text-brandText mt-1">What our regulars say</h2>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-3 shadow-sm">
+            <div class="text-amber-400 text-xs">★★★★★</div>
+            <p class="text-xs text-stone-600 leading-relaxed italic">"The salted caramel cream cookie ruined every other cookie for me. Ordered a box for the office in Kilimani and it was gone before lunch."</p>
+            <p class="text-[11px] font-bold text-brandTeal uppercase tracking-wider">— PRIYA M. • KILIMANI</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-3 shadow-sm">
+            <div class="text-amber-400 text-xs">★★★★★</div>
+            <p class="text-xs text-stone-600 leading-relaxed italic">"Our wedding cookie table was the most talked-about thing at the reception. Cora walked us through every flavor step by step."</p>
+            <p class="text-[11px] font-bold text-brandTeal uppercase tracking-wider">— DANIEL & RAE • WESTLANDS</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-3 shadow-sm">
+            <div class="text-amber-400 text-xs">★★★★★</div>
+            <p class="text-xs text-stone-600 leading-relaxed italic">"I stop in every Friday for the ube marble and a coffee. The staff know my order and that is why I keep coming back!"</p>
+            <p class="text-[11px] font-bold text-brandTeal uppercase tracking-wider">— MARCUS T. • Lavington</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW: OUR MENU -->
+    <section id="view-menu" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+      
+      <!-- Menu Header Banner -->
+      <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 text-center space-y-3 border border-stone-200">
+        <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">OUR MENU</span>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-brandText">Baked fresh every morning</h2>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">Cookies, bars and cakes in small batches. Order a box, or stop by our Kilimani shop and pick directly from the display case.</p>
+      </div>
+
+      <!-- Filters & Search Bar -->
+      <div class="flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Category Filter Pills -->
+        <div class="flex items-center space-x-2 overflow-x-auto w-full sm:w-auto pb-2 sm:pb-0">
+          <button onclick="filterMenu('all', this)" class="menu-filter-btn bg-brandTeal text-white text-xs font-bold py-2 px-4 rounded-full transition">EVERYTHING</button>
+          <button onclick="filterMenu('cookies', this)" class="menu-filter-btn bg-white border border-stone-300 text-stone-700 text-xs font-bold py-2 px-4 rounded-full hover:bg-stone-50 transition">COOKIES & BARS</button>
+          <button onclick="filterMenu('cakes', this)" class="menu-filter-btn bg-white border border-stone-300 text-stone-700 text-xs font-bold py-2 px-4 rounded-full hover:bg-stone-50 transition">CAKES</button>
+          <button onclick="filterMenu('seasonal', this)" class="menu-filter-btn bg-white border border-stone-300 text-stone-700 text-xs font-bold py-2 px-4 rounded-full hover:bg-stone-50 transition">SEASONAL</button>
+        </div>
+
+        <!-- In-Page Search -->
+        <div class="relative w-full sm:w-72 flex items-center space-x-2">
+          <input type="text" id="menuSearchInput" oninput="handleMenuSearch()" placeholder="Search flavor..." class="w-full bg-white border border-stone-300 text-xs rounded-full py-2 pl-4 pr-10 focus:outline-none focus:border-brandTeal">
+          <button onclick="handleMenuSearch()" class="bg-brandTeal text-white text-xs font-bold px-4 py-2 rounded-full hover:bg-brandTealDark transition">GO</button>
+        </div>
+      </div>
+
+      <!-- Product Count Info -->
+      <div id="productCountInfo" class="text-xs text-stone-500 uppercase tracking-wider font-semibold">
+        SHOWING ALL TREATS
+      </div>
+
+      <!-- Menu Grid -->
+      <div id="menuGrid" class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <!-- Menu Items -->
+        <div class="menu-item cookies bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="relative rounded-xl overflow-hidden h-48 mb-3">
+              <span class="absolute top-2 left-2 bg-brandCoral text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">BEST SELLER</span>
+              <img src="https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Ultimate Chocolate Chip</h4>
+            <p class="text-xs text-stone-500 mt-1">Brown butter dough, two blends of chocolate and a pinch of sea salt.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.9</span><span class="text-stone-400 text-[10px]">(495 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 350</span>
+            <button onclick="addToCart('Ultimate Chocolate Chip', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item cookies bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="rounded-xl overflow-hidden h-48 mb-3">
+              <img src="https://images.unsplash.com/photo-1621303837174-89787a7d4729?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Salted Caramel Cream</h4>
+            <p class="text-xs text-stone-500 mt-1">Slow-cooked caramel folded through cream chunks with sea salt.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.8</span><span class="text-stone-400 text-[10px]">(218 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 350</span>
+            <button onclick="addToCart('Salted Caramel Cream', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item cookies bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="rounded-xl overflow-hidden h-48 mb-3">
+              <img src="https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Ube Marble</h4>
+            <p class="text-xs text-stone-500 mt-1">Purple yam and vanilla swirled together with a crackled top.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.8</span><span class="text-stone-400 text-[10px]">(151 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 350</span>
+            <button onclick="addToCart('Ube Marble', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item cookies bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="relative rounded-xl overflow-hidden h-48 mb-3">
+              <span class="absolute top-2 left-2 bg-blue-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">FAN FAVORITE</span>
+              <img src="https://images.unsplash.com/photo-1618923850107-d1a234d7a73a?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Blue Monster</h4>
+            <p class="text-xs text-stone-500 mt-1">Blue vanilla dough loaded with dark chocolate and white chips.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.9</span><span class="text-stone-400 text-[10px]">(204 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 350</span>
+            <button onclick="addToCart('Blue Monster', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item cakes bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="rounded-xl overflow-hidden h-48 mb-3">
+              <img src="https://images.unsplash.com/photo-1578985545062-69928b1d9587?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Classic Chocolate Cake</h4>
+            <p class="text-xs text-stone-500 mt-1">Four layers of dark chocolate cake with glossy ganache. 8-inch size.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.9</span><span class="text-stone-400 text-[10px]">(88 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 4,200</span>
+            <button onclick="addToCart('Classic Chocolate Cake', 4200)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item cakes bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="relative rounded-xl overflow-hidden h-48 mb-3">
+              <span class="absolute top-2 left-2 bg-brandCoral text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">ORDER 48H AHEAD</span>
+              <img src="https://images.unsplash.com/photo-1535141192574-5d4897c13136?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Strawberry Celebration Cake</h4>
+            <p class="text-xs text-stone-500 mt-1">Vanilla sponge, fresh Naivasha strawberries and whipped buttercream.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.9</span><span class="text-stone-400 text-[10px]">(121 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 4,500</span>
+            <button onclick="addToCart('Strawberry Celebration Cake', 4500)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+
+        <div class="menu-item seasonal cookies bg-white rounded-2xl border border-stone-200 p-4 flex flex-col justify-between shadow-sm hover:shadow-md transition">
+          <div>
+            <div class="relative rounded-xl overflow-hidden h-48 mb-3">
+              <span class="absolute top-2 left-2 bg-amber-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase tracking-wider">SEASONAL</span>
+              <img src="https://images.unsplash.com/photo-1612203985729-70726954388c?auto=format&fit=crop&w=600&q=80" onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1558961363-fa8fdf82db35?auto=format&fit=crop&w=600&q=80'" alt="Cora &amp; Crumb bakery treat" class="w-full h-full object-cover">
+            </div>
+            <h4 class="font-serif font-bold text-lg">Spiced Pumpkin & Cinnamon</h4>
+            <p class="text-xs text-stone-500 mt-1">Warm spices, cinnamon sugar and toasted pecans on top.</p>
+            <div class="flex items-center space-x-1 mt-2 text-amber-500 text-xs"><span>★ 4.8</span><span class="text-stone-400 text-[10px]">(98 reviews)</span></div>
+          </div>
+          <div class="flex items-center justify-between mt-4 pt-3 border-t border-stone-100">
+            <span class="font-bold text-sm">KES 350</span>
+            <button onclick="addToCart('Spiced Pumpkin & Cinnamon', 350)" class="bg-brandTeal text-white text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-brandTealDark transition">+ ADD</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- No Results State -->
+      <div id="noResultsState" class="hidden text-center py-16 bg-white rounded-3xl border border-stone-200 space-y-4">
+        <h3 class="text-2xl font-serif font-bold text-brandText">Nothing matched that search</h3>
+        <p class="text-xs text-stone-500 max-w-sm mx-auto">Try another flavor, or clear the filters and browse everything on our Nairobi menu.</p>
+        <button onclick="resetMenuSearch()" class="bg-brandTeal text-white text-xs font-bold py-3 px-6 rounded-full hover:bg-brandTealDark transition">
+          SHOW EVERYTHING
+        </button>
+      </div>
+
+    </section>
+
+    <!-- VIEW: BUILD YOUR OWN BOX -->
+    <section id="view-box" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-8">
+      
+      <!-- Box Header -->
+      <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 text-center space-y-4 border border-stone-200">
+        <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">BUILD YOUR OWN BOX</span>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-brandText">Every cookie, your call</h2>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-lg mx-auto">Choose a dozen or two dozen, then mix any signature or seasonal flavor in four-cookie steps.</p>
+        
+        <!-- Size Selector -->
+        <div class="inline-flex bg-white p-1 rounded-full border border-stone-300 shadow-sm mt-2">
+          <button id="boxBtn12" onclick="setBoxTargetSize(12)" class="px-6 py-2 rounded-full text-xs font-bold bg-brandTeal text-white transition">ONE DOZEN (12)</button>
+          <button id="boxBtn24" onclick="setBoxTargetSize(24)" class="px-6 py-2 rounded-full text-xs font-bold text-stone-600 hover:text-stone-900 transition">TWO DOZEN (24)</button>
+        </div>
+      </div>
+
+      <!-- Box Builder Content Grid -->
+      <div class="grid lg:grid-cols-3 gap-8 items-start">
+        
+        <!-- Cookie Flavor Selector Grid -->
+        <div class="lg:col-span-2 grid sm:grid-cols-2 gap-4" id="boxFlavorList">
+          <!-- Rendered via JS -->
+        </div>
+
+        <!-- Sticky Box Summary Sidebar -->
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 shadow-lg space-y-6 lg:sticky lg:top-28">
+          <div class="space-y-1">
+            <span class="text-[10px] uppercase tracking-widest text-brandTeal font-bold">YOUR BOX SUMMARY</span>
+            <h3 id="boxTitle" class="text-xl font-serif font-bold text-brandText">One Dozen Box</h3>
+          </div>
+
+          <!-- Progress Bar -->
+          <div class="space-y-2">
+            <div class="flex justify-between text-xs font-semibold">
+              <span id="boxCountLabel">0 of 12 cookies chosen</span>
+              <span id="boxPercentLabel" class="text-brandTeal">0%</span>
+            </div>
+            <div class="w-full bg-stone-100 rounded-full h-3 overflow-hidden">
+              <div id="boxProgressBar" class="bg-brandTeal h-full w-0 transition-all duration-300"></div>
+            </div>
+          </div>
+
+          <div class="border-t border-stone-100 pt-4 flex justify-between items-center">
+            <span class="text-xs text-stone-500 font-semibold">TOTAL PRICE</span>
+            <span id="boxTotalPrice" class="text-2xl font-bold font-serif text-brandTeal">KES 2,500</span>
+          </div>
+
+          <button id="addBoxToCartBtn" onclick="addCustomBoxToCart()" disabled class="w-full bg-stone-300 text-stone-500 text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition flex items-center justify-center space-x-2 cursor-not-allowed">
+            <span>ADD BOX TO BASKET</span>
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+          </button>
+
+          <p class="text-[11px] text-stone-400 text-center leading-normal">Boxes arrive ribboned with flavor lists tucked inside. Orders delivered across Nairobi.</p>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VIEW: CELEBRATIONS -->
+    <section id="view-celebrations" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
+      
+      <!-- Celebrations Hero Header -->
+      <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 text-center space-y-4 border border-stone-200">
+        <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">CELEBRATIONS</span>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-brandText">Cookie tables, client gifts and big days</h2>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">Weddings, showers, corporate gifting in Nairobi. Tell us the occasion and we'll build the box towers or cookie spreads around it.</p>
+      </div>
+
+      <!-- Feature Image -->
+      <div class="rounded-3xl overflow-hidden shadow-xl h-72 sm:h-96">
+        <img src="https://images.unsplash.com/photo-1519225421980-715cb0215aed?auto=format&fit=crop&w=1200&q=80" class="w-full h-full object-cover">
+      </div>
+
+      <!-- Event Categories Grid -->
+      <div class="grid md:grid-cols-3 gap-6">
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+          <h3 class="font-serif font-bold text-xl text-brandTeal">Weddings & Showers</h3>
+          <p class="text-xs text-stone-600 leading-relaxed">Cookie tables, favors, and a dessert spread that matches your palette. Delivered and set up across Nairobi.</p>
+          <p class="text-[10px] font-bold text-brandCoral uppercase tracking-wider pt-2">FROM 100 COOKIES</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+          <h3 class="font-serif font-bold text-xl text-brandTeal">Corporate Gifts</h3>
+          <p class="text-xs text-stone-600 leading-relaxed">Ribboned boxes with your company logo card — shipped to one office in Nairobi or fifty individual desks.</p>
+          <p class="text-[10px] font-bold text-brandCoral uppercase tracking-wider pt-2">FROM 10 BOXES</p>
+        </div>
+        <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2 shadow-sm">
+          <h3 class="font-serif font-bold text-xl text-brandTeal">Birthdays & Thank-yous</h3>
+          <p class="text-xs text-stone-600 leading-relaxed">Over-the-top cookie stacks or whole celebration cakes made to order in Nairobi with 48 hours notice.</p>
+          <p class="text-[10px] font-bold text-brandCoral uppercase tracking-wider pt-2">FROM 1 DOZEN</p>
+        </div>
+      </div>
+
+      <!-- Inquiry Form & Details Grid -->
+      <div class="grid md:grid-cols-2 gap-8 items-start pt-6">
+        
+        <div class="space-y-6">
+          <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">GOOD TO KNOW</span>
+          <h3 class="text-3xl font-serif font-bold text-brandText">What we'll ask you</h3>
+          <div class="space-y-4 text-xs text-stone-600">
+            <p class="border-b border-stone-200 pb-3">1. How many guests, and roughly how many cookies each?</p>
+            <p class="border-b border-stone-200 pb-3">2. Whether you want boxes, platters, favors or a full table setup.</p>
+            <p class="border-b border-stone-200 pb-3">3. Any specific colors, company branding, or dietary requests.</p>
+            <p class="pb-3">4. Delivery and setup location within Nairobi (Kilimani, Westlands, Karen, etc.).</p>
+          </div>
+        </div>
+
+        <!-- WhatsApp Direct Form -->
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-lg space-y-4">
+          <h3 class="font-serif font-bold text-xl text-brandText">Tell us about your celebration</h3>
+          <p class="text-xs text-stone-500">Submit this form to launch a pre-filled WhatsApp message directly to our Nairobi events team.</p>
+          
+          <form id="celebrationForm" onsubmit="handleCelebrationsSubmit(event)" class="space-y-3">
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">YOUR NAME</label>
+              <input type="text" id="celebName" required class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">EVENT TYPE</label>
+              <select id="celebType" class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+                <option>Wedding or Shower</option>
+                <option>Corporate Gift / Event</option>
+                <option>Birthday / Private Party</option>
+              </select>
+            </div>
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">GUESTS</label>
+                <input type="number" id="celebGuests" placeholder="e.g. 80" class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">EVENT DATE</label>
+                <input type="date" id="celebDate" class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">NOTES / DETAILS</label>
+              <textarea id="celebNotes" rows="3" placeholder="Tell us what you're baking for..." class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-brandCoral text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl hover:bg-brandCoralHover transition shadow-md">
+              SEND ENQUIRY VIA WHATSAPP
+            </button>
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- VIEW: OUR STORY -->
+    <section id="view-story" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
+      
+      <!-- Story Header -->
+      <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 text-center space-y-4 border border-stone-200">
+        <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">OUR STORY</span>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-brandText">Meet Cora — yes, she's real!</h2>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">She still scoops the first tray every morning in Kilimani. Here is how a stack of 3x5 recipe cards became Nairobi's favorite bake shop.</p>
+      </div>
+
+      <!-- Founder Detailed Layout -->
+      <div class="grid md:grid-cols-2 gap-12 items-center">
+        <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?auto=format&fit=crop&w=800&q=80" class="rounded-3xl shadow-xl w-full object-cover h-[450px]">
+        <div class="space-y-6">
+          <h3 class="text-3xl font-serif font-bold text-brandText">Hi! I'm Cora, founder of Cora & Crumb.</h3>
+          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">Every day as a child, I would come home from school to enjoy my grandmother's company over a glass of fresh milk and warm cookies. That simple ritual taught me that baking is about bringing people together.</p>
+          <p class="text-xs sm:text-sm text-stone-600 leading-relaxed">When we started Cora & Crumb in Kilimani, Nairobi, we made a promise: zero artificial shortcuts, European butter, real chocolate, and handcrafted care in every batch.</p>
+          <button onclick="switchView('menu')" class="bg-brandCoral text-white text-xs font-bold uppercase tracking-wider py-3 px-6 rounded-full hover:bg-brandCoralHover transition">
+            SEE WHAT WE BAKE
+          </button>
+        </div>
+      </div>
+
+      <!-- Full Width Quote Banner -->
+      <div class="bg-brandTeal text-white rounded-3xl p-8 sm:p-12 text-center space-y-3 shadow-lg">
+        <p class="font-serif italic text-2xl sm:text-3xl max-w-2xl mx-auto">"If it wouldn't have been good enough for my grandmothers, it doesn't leave the kitchen."</p>
+        <p class="text-xs uppercase tracking-widest text-teal-200 font-bold">— CORA • FOUNDER</p>
+      </div>
+
+      <!-- Three Rules Grid -->
+      <div class="space-y-6">
+        <div class="text-center">
+          <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">HOW WE BAKE</span>
+          <h3 class="text-3xl font-serif font-bold text-brandText mt-1">Three rules, no exceptions</h3>
+        </div>
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2">
+            <h4 class="font-serif font-bold text-lg text-brandTeal">Real butter, always</h4>
+            <p class="text-xs text-stone-600 leading-relaxed">European butter, real vanilla, proper chocolate chunks. No shortenings or artificial flavors — ever.</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2">
+            <h4 class="font-serif font-bold text-lg text-brandTeal">Small batches only</h4>
+            <p class="text-xs text-stone-600 leading-relaxed">Every tray is mixed, hand-scooped and baked fresh daily in Kilimani. When we sell out, we're done for the day.</p>
+          </div>
+          <div class="bg-white p-6 rounded-2xl border border-stone-200 space-y-2">
+            <h4 class="font-serif font-bold text-lg text-brandTeal">Recipes written by hand</h4>
+            <p class="text-xs text-stone-600 leading-relaxed">Tested and tweaked over decades. Our original cards still sit on the shelf in the kitchen.</p>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- VIEW: VISIT US & FAQS -->
+    <section id="view-visit" class="view-section hidden max-w-7xl mx-auto px-4 sm:px-8 py-8 space-y-12">
+      
+      <!-- Visit Header -->
+      <div class="bg-brandCreamCard rounded-3xl p-8 sm:p-12 text-center space-y-4 border border-stone-200">
+        <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">VISIT US</span>
+        <h2 class="text-3xl sm:text-5xl font-serif font-bold text-brandText">Our Kilimani Bake Shop</h2>
+        <p class="text-xs sm:text-sm text-stone-600 max-w-xl mx-auto">Smell the ovens from the street! Stop by for fresh treats, coffee, or pick up your online WhatsApp orders.</p>
+        <div class="flex justify-center space-x-4 pt-2">
+          <a href="https://wa.me/254712345678" target="_blank" class="bg-brandTeal text-white text-xs font-bold py-2.5 px-6 rounded-full hover:bg-brandTealDark transition inline-flex items-center space-x-2">
+            <span>WHATSAPP US</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Single Location Details Card -->
+      <div class="max-w-2xl mx-auto bg-white rounded-3xl border border-stone-200 p-8 shadow-lg space-y-6">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-brandTealLight text-brandTeal flex items-center justify-center font-bold text-lg">📍</div>
+          <div>
+            <h3 class="font-serif font-bold text-2xl text-brandText">Kilimani Bake Shop</h3>
+            <p class="text-xs text-stone-500">Argwings Kodhek Road, Kilimani, Nairobi</p>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4 text-xs text-stone-600 pt-2 border-t border-stone-100">
+          <div>
+            <p class="font-bold text-stone-800 uppercase tracking-wider mb-1">HOURS</p>
+            <p>Mon – Sat: 8:00 AM – 7:00 PM</p>
+            <p>Sun: 9:00 AM – 5:00 PM</p>
+          </div>
+          <div>
+            <p class="font-bold text-stone-800 uppercase tracking-wider mb-1">CONTACT & ORDERS</p>
+            <p>Phone: +254 712 345 678</p>
+            <p>M-Pesa Till: 889 400</p>
+          </div>
+        </div>
+
+        <p class="text-xs text-stone-500 italic bg-brandCream p-4 rounded-xl">Our original Nairobi shop — enjoy our espresso bar, outdoor garden seating, and fresh cookie cases.</p>
+      </div>
+
+      <!-- Contact & Accordion FAQs -->
+      <div class="grid md:grid-cols-2 gap-8 items-start pt-6">
+        
+        <!-- Contact Form -->
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-stone-200 shadow-md space-y-4">
+          <h3 class="font-serif font-bold text-xl text-brandText">Send us a note</h3>
+          <p class="text-xs text-stone-500">Orders, feedback or general questions — it all lands directly with our bakers.</p>
+          
+          <form onsubmit="handleContactNote(event)" class="space-y-3">
+            <div class="grid grid-cols-2 gap-3">
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">NAME</label>
+                <input type="text" required class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+              </div>
+              <div>
+                <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">PHONE</label>
+                <input type="tel" required class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal">
+              </div>
+            </div>
+            <div>
+              <label class="block text-[10px] uppercase tracking-wider font-bold text-stone-600 mb-1">MESSAGE</label>
+              <textarea rows="3" required class="w-full bg-stone-50 border border-stone-200 text-xs rounded-xl p-2.5 focus:outline-none focus:border-brandTeal"></textarea>
+            </div>
+            <button type="submit" class="w-full bg-brandTeal text-white text-xs font-bold uppercase tracking-wider py-3 rounded-xl hover:bg-brandTealDark transition">
+              SEND MESSAGE
+            </button>
+          </form>
+        </div>
+
+        <!-- FAQs Accordion -->
+        <div class="space-y-4">
+          <span class="text-xs uppercase tracking-[0.2em] text-brandTeal font-bold">GOOD TO KNOW</span>
+          <h3 class="text-2xl font-serif font-bold text-brandText">Questions we hear daily</h3>
+
+          <div class="space-y-2">
+            <div class="bg-white rounded-xl border border-stone-200 p-4 cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex justify-between items-center font-serif font-bold text-sm text-brandText">
+                <span>How do I order and pay?</span>
+                <span class="text-brandTeal text-lg">+</span>
+              </div>
+              <p class="text-xs text-stone-600 mt-2 hidden">Add items to your basket and click "Checkout via WhatsApp". It sends your order directly to our team, and you can complete payment via M-Pesa Till 889 400.</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-stone-200 p-4 cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex justify-between items-center font-serif font-bold text-sm text-brandText">
+                <span>Do you deliver across Nairobi?</span>
+                <span class="text-brandTeal text-lg">+</span>
+              </div>
+              <p class="text-xs text-stone-600 mt-2 hidden">Yes! We deliver across Kilimani, Westlands, Lavington, Karen, Kileleshwa, and surrounding Nairobi areas. Free delivery for orders over KES 3,500.</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-stone-200 p-4 cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex justify-between items-center font-serif font-bold text-sm text-brandText">
+                <span>Can I choose my own flavors in a box?</span>
+                <span class="text-brandTeal text-lg">+</span>
+              </div>
+              <p class="text-xs text-stone-600 mt-2 hidden">Absolutely! Use our "Build Your Own Box" page to customize every cookie in a 12 or 24 box.</p>
+            </div>
+
+            <div class="bg-white rounded-xl border border-stone-200 p-4 cursor-pointer" onclick="toggleFaq(this)">
+              <div class="flex justify-between items-center font-serif font-bold text-sm text-brandText">
+                <span>What about nut allergies or dietary needs?</span>
+                <span class="text-brandTeal text-lg">+</span>
+              </div>
+              <p class="text-xs text-stone-600 mt-2 hidden">All allergens are clearly listed. While we take precautions, our Kilimani kitchen processes nuts, dairy and gluten.</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- GLOBAL NEWSLETTER & FOOTER -->
+  <footer class="bg-brandCream border-t border-stone-200 pt-12 pb-8 mt-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-8 space-y-12">
+      
+      <!-- Newsletter Banner -->
+      <div class="bg-brandCreamCard rounded-3xl p-6 sm:p-10 grid md:grid-cols-2 gap-6 items-center border border-stone-200">
+        <div class="space-y-1">
+          <span class="text-[10px] uppercase tracking-widest text-brandTeal font-bold">GET THE SWEET SCOOP</span>
+          <h3 class="text-2xl font-serif font-bold text-brandText">Seasonal specials & bakery news — straight to your inbox.</h3>
+        </div>
+        <form onsubmit="handleNewsletter(event)" class="flex gap-2">
+          <input type="email" required placeholder="Enter your email" class="bg-white border border-stone-300 text-xs rounded-full py-3 px-4 flex-grow focus:outline-none focus:border-brandTeal">
+          <button type="submit" class="bg-brandCoral text-white text-xs font-bold px-6 py-3 rounded-full hover:bg-brandCoralHover transition uppercase tracking-wider">SIGN UP</button>
+        </form>
+      </div>
+
+      <!-- Footer Columns -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-xs text-stone-600">
+        <div class="space-y-3">
+          <h4 class="font-bold text-brandTeal uppercase tracking-wider text-[11px]">TELL CORA</h4>
+          <p>Feedback or questions? Write to us directly:</p>
+          <p class="font-medium text-stone-800">hello@coraandcrumb.co.ke</p>
+          <p class="font-medium text-stone-800">+254 712 345 678</p>
+          <p>Argwings Kodhek Rd, Kilimani, Nairobi</p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-brandTeal uppercase tracking-wider text-[11px]">SHOP</h4>
+          <p><button onclick="switchView('menu')" class="hover:underline">Our Menu</button></p>
+          <p><button onclick="switchView('box')" class="hover:underline">Build Your Own Box</button></p>
+          <p><button onclick="switchView('menu')" class="hover:underline">Seasonal Treats</button></p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-brandTeal uppercase tracking-wider text-[11px]">ABOUT US</h4>
+          <p><button onclick="switchView('story')" class="hover:underline">Our Story</button></p>
+          <p><button onclick="switchView('visit')" class="hover:underline">Kilimani Location</button></p>
+          <p><button onclick="switchView('celebrations')" class="hover:underline">Celebrations & Events</button></p>
+        </div>
+        <div class="space-y-2">
+          <h4 class="font-bold text-brandTeal uppercase tracking-wider text-[11px]">HOW CAN WE HELP</h4>
+          <p><button onclick="switchView('visit')" class="hover:underline">Contact Us</button></p>
+          <p><button onclick="switchView('visit')" class="hover:underline">FAQs</button></p>
+          <p><button onclick="toggleBasket(true)" class="hover:underline">Your Basket</button></p>
+        </div>
+      </div>
+
+      <!-- Bottom Bar -->
+      <div class="border-t border-stone-200 pt-6 flex flex-col sm:flex-row justify-between items-center text-[11px] text-stone-400 space-y-2 sm:space-y-0">
+        <p>CORA & CRUMB © 2026 • ALL RIGHTS RESERVED</p>
+        <p class="font-semibold text-stone-500">BAKED DAILY IN KILIMANI, NAIROBI • OPEN 8AM–7PM</p>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- SLIDE-OUT BASKET DRAWER OVERLAY -->
+  <div id="basketOverlay" class="fixed inset-0 bg-black/40 backdrop-blur-sm z-50 hidden transition-opacity" onclick="toggleBasket(false)"></div>
+  
+  <div id="basketDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-brandCream z-50 transform translate-x-full transition-transform duration-300 flex flex-col shadow-2xl">
+    
+    <!-- Drawer Header -->
+    <div class="p-6 border-b border-stone-200 flex justify-between items-center bg-white">
+      <div>
+        <span class="text-[10px] uppercase tracking-widest text-brandTeal font-bold">YOUR BASKET</span>
+        <h3 class="text-xl font-serif font-bold text-brandText"><span id="cartItemCountLabel">0</span> treats</h3>
+      </div>
+      <button onclick="toggleBasket(false)" class="text-stone-400 hover:text-stone-800 text-2xl font-bold p-1">✕</button>
+    </div>
+
+    <!-- Free Shipping Progress -->
+    <div class="bg-brandTealLight p-3 px-6 text-xs text-brandTeal font-medium flex items-center justify-between border-b border-stone-200">
+      <span id="freeDeliveryLabel">Add KES 3,500 for Free Nairobi Delivery!</span>
+      <span class="font-bold text-[10px] uppercase">MPESA READY</span>
+    </div>
+
+    <!-- Cart Items List -->
+    <div id="cartItemsContainer" class="flex-grow overflow-y-auto p-6 space-y-4">
+      <!-- Empty State -->
+      <div id="emptyCartView" class="text-center py-16 space-y-4">
+        <div class="w-16 h-16 bg-stone-100 text-stone-400 rounded-full flex items-center justify-center mx-auto text-2xl">🛍️</div>
+        <h4 class="font-serif font-bold text-lg text-brandText">Your basket is empty</h4>
+        <p class="text-xs text-stone-500 max-w-xs mx-auto">Warm cookies in Kilimani are only a couple of clicks away.</p>
+        <button onclick="toggleBasket(false); switchView('menu');" class="bg-brandTeal text-white text-xs font-bold py-2.5 px-6 rounded-full hover:bg-brandTealDark transition">
+          BROWSE THE MENU
+        </button>
+      </div>
+
+      <!-- Items rendered via JS -->
+      <div id="cartItemsList" class="space-y-3"></div>
+    </div>
+
+    <!-- Cart Footer / WhatsApp Checkout -->
+    <div class="p-6 border-t border-stone-200 bg-white space-y-4">
+      <div class="space-y-1.5 text-xs">
+        <div class="flex justify-between text-stone-500">
+          <span>Subtotal</span>
+          <span id="cartSubtotal" class="font-bold text-stone-800">KES 0</span>
+        </div>
+        <div class="flex justify-between text-stone-500">
+          <span>Nairobi Delivery</span>
+          <span id="cartDeliveryFee" class="font-bold text-stone-800">KES 300</span>
+        </div>
+        <div class="flex justify-between text-sm font-bold text-brandText border-t border-stone-100 pt-2">
+          <span>Total</span>
+          <span id="cartTotal" class="text-brandTeal font-serif text-lg">KES 0</span>
+        </div>
+      </div>
+
+      <!-- M-Pesa Info Box -->
+      <div class="bg-emerald-50 border border-emerald-200 rounded-xl p-2.5 text-[11px] text-emerald-800 flex items-center justify-between">
+        <span> Pay via M-Pesa Till: <strong>889 400</strong></span>
+        <span class="text-[9px] font-bold bg-emerald-200 px-2 py-0.5 rounded">INSTANT</span>
+      </div>
+
+      <button id="whatsappCheckoutBtn" onclick="sendWhatsAppOrder()" disabled class="w-full bg-stone-300 text-stone-500 text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition flex items-center justify-center space-x-2 cursor-not-allowed">
+        <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981z"/></svg>
+        <span>CHECKOUT VIA WHATSAPP</span>
+      </button>
+    </div>
+
+  </div>
+
+  <!-- JAVASCRIPT STATE MANAGEMENT -->
+  <script>
+    // APP STATE
+    let cart = [];
+    let customBoxSize = 12;
+    let customBoxSelection = {};
+
+    const availableFlavors = [
+      { name: "Ultimate Chocolate Chip", price: 350 },
+      { name: "Salted Caramel Cream", price: 350 },
+      { name: "Ube Marble", price: 350 },
+      { name: "Blue Monster", price: 350 },
+      { name: "Double Dark Fudge", price: 350 },
+      { name: "Red Velvet White Chip", price: 350 },
+      { name: "Lemon Bar Shortbread", price: 350 },
+      { name: "Spiced Pumpkin", price: 350 }
+    ];
+
+    // NAVIGATION
+    function switchView(viewId) {
+      document.querySelectorAll('.view-section').forEach(el => el.classList.add('hidden'));
+      const active = document.getElementById(`view-${viewId}`);
+      if (active) active.classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // BASKET DRAWER
+    function toggleBasket(open) {
+      const drawer = document.getElementById('basketDrawer');
+      const overlay = document.getElementById('basketOverlay');
+      if (open) {
+        overlay.classList.remove('hidden');
+        setTimeout(() => drawer.classList.remove('translate-x-full'), 10);
+      } else {
+        drawer.classList.add('translate-x-full');
+        setTimeout(() => overlay.classList.add('hidden'), 300);
+      }
+    }
+
+    // CART MANAGEMENT
+    function addToCart(name, price, qty = 1) {
+      const existing = cart.find(item => item.name === name);
+      if (existing) {
+        existing.qty += qty;
+      } else {
+        cart.push({ name, price, qty });
+      }
+      updateCartUI();
+      toggleBasket(true);
+    }
+
+    function updateCartQty(index, change) {
+      cart[index].qty += change;
+      if (cart[index].qty <= 0) cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((sum, item) => sum + item.qty, 0);
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const deliveryFee = subtotal >= 3500 || subtotal === 0 ? 0 : 300;
+      const total = subtotal + deliveryFee;
+
+      document.getElementById('cartCountBadge').innerText = totalCount;
+      document.getElementById('cartItemCountLabel').innerText = totalCount;
+
+      const emptyView = document.getElementById('emptyCartView');
+      const itemsList = document.getElementById('cartItemsList');
+      const checkoutBtn = document.getElementById('whatsappCheckoutBtn');
+
+      if (cart.length === 0) {
+        emptyView.classList.remove('hidden');
+        itemsList.innerHTML = '';
+        checkoutBtn.disabled = true;
+        checkoutBtn.className = "w-full bg-stone-300 text-stone-500 text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl cursor-not-allowed flex items-center justify-center space-x-2";
+      } else {
+        emptyView.classList.add('hidden');
+        checkoutBtn.disabled = false;
+        checkoutBtn.className = "w-full bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-lg";
+
+        itemsList.innerHTML = cart.map((item, idx) => `
+          <div class="bg-white p-3 rounded-xl border border-stone-200 flex items-center justify-between">
+            <div class="pr-2">
+              <h5 class="font-serif font-bold text-xs text-brandText">${item.name}</h5>
+              <p class="text-[10px] text-stone-500">KES ${item.price.toLocaleString()} each</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="updateCartQty(${idx}, -1)" class="w-6 h-6 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 flex items-center justify-center font-bold text-xs">-</button>
+              <span class="text-xs font-bold w-4 text-center">${item.qty}</span>
+              <button onclick="updateCartQty(${idx}, 1)" class="w-6 h-6 rounded-full bg-stone-100 text-stone-600 hover:bg-stone-200 flex items-center justify-center font-bold text-xs">+</button>
+            </div>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('cartSubtotal').innerText = `KES ${subtotal.toLocaleString()}`;
+      document.getElementById('cartDeliveryFee').innerText = deliveryFee === 0 && subtotal > 0 ? "FREE" : `KES ${deliveryFee}`;
+      document.getElementById('cartTotal').innerText = `KES ${total.toLocaleString()}`;
+
+      const freeDelLabel = document.getElementById('freeDeliveryLabel');
+      if (subtotal >= 3500) {
+        freeDelLabel.innerText = "🎉 You unlocked Free Nairobi Delivery!";
+      } else {
+        freeDelLabel.innerText = `Add KES ${(3500 - subtotal).toLocaleString()} more for Free Delivery!`;
+      }
+    }
+
+    // WHATSAPP CHECKOUT FORMATTER
+    function sendWhatsAppOrder() {
+      if (cart.length === 0) return;
+      
+      let message = `👋 *Hi Cora & Crumb Nairobi!* I'd like to place an order:\n\n*ORDER DETAILS:*\n`;
+      cart.forEach(item => {
+        message += `• ${item.qty}x ${item.name} - KES ${(item.price * item.qty).toLocaleString()}\n`;
+      });
+
+      const subtotal = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+      const delivery = subtotal >= 3500 ? 0 : 300;
+      const total = subtotal + delivery;
+
+      message += `\n*Subtotal:* KES ${subtotal.toLocaleString()}`;
+      message += `\n*Delivery:* ${delivery === 0 ? 'FREE' : 'KES ' + delivery}`;
+      message += `\n*TOTAL:* KES ${total.toLocaleString()}`;
+      message += `\n\n*Payment via:* M-Pesa Till 889 400`;
+      message += `\n*Pickup/Delivery Location in Nairobi:* Kilimani / Nairobi`;
+
+      const encoded = encodeURIComponent(message);
+      window.open(`https://wa.me/254712345678?text=${encoded}`, '_blank');
+    }
+
+    // BUILD YOUR OWN BOX LOGIC
+    function renderBoxFlavors() {
+      const container = document.getElementById('boxFlavorList');
+      container.innerHTML = availableFlavors.map(f => {
+        const count = customBoxSelection[f.name] || 0;
+        return `
+          <div class="bg-white p-4 rounded-2xl border border-stone-200 flex items-center justify-between shadow-sm">
+            <div>
+              <h5 class="font-serif font-bold text-sm text-brandText">${f.name}</h5>
+              <p class="text-[10px] text-stone-500 uppercase">4 COOKIES PER STEP</p>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="changeBoxFlavorQty('${f.name}', -4)" class="w-7 h-7 rounded-full bg-brandTealLight text-brandTeal hover:bg-brandTeal hover:text-white transition flex items-center justify-center font-bold text-xs">-</button>
+              <span class="text-xs font-bold w-6 text-center">${count}</span>
+              <button onclick="changeBoxFlavorQty('${f.name}', 4)" class="w-7 h-7 rounded-full bg-brandTealLight text-brandTeal hover:bg-brandTeal hover:text-white transition flex items-center justify-center font-bold text-xs">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function setBoxTargetSize(size) {
+      customBoxSize = size;
+      customBoxSelection = {};
+      document.getElementById('boxBtn12').className = size === 12 ? 'px-6 py-2 rounded-full text-xs font-bold bg-brandTeal text-white transition' : 'px-6 py-2 rounded-full text-xs font-bold text-stone-600 hover:text-stone-900 transition';
+      document.getElementById('boxBtn24').className = size === 24 ? 'px-6 py-2 rounded-full text-xs font-bold bg-brandTeal text-white transition' : 'px-6 py-2 rounded-full text-xs font-bold text-stone-600 hover:text-stone-900 transition';
+      document.getElementById('boxTitle').innerText = size === 12 ? 'One Dozen Box' : 'Two Dozen Box';
+      document.getElementById('boxTotalPrice').innerText = size === 12 ? 'KES 2,500' : 'KES 4,500';
+      updateBoxUI();
+      renderBoxFlavors();
+    }
+
+    function changeBoxFlavorQty(name, change) {
+      const currentTotal = Object.values(customBoxSelection).reduce((a, b) => a + b, 0);
+      const currentVal = customBoxSelection[name] || 0;
+
+      if (change > 0 && currentTotal + change > customBoxSize) return;
+      if (change < 0 && currentVal + change < 0) return;
+
+      customBoxSelection[name] = currentVal + change;
+      if (customBoxSelection[name] === 0) delete customBoxSelection[name];
+
+      updateBoxUI();
+      renderBoxFlavors();
+    }
+
+    function updateBoxUI() {
+      const selectedCount = Object.values(customBoxSelection).reduce((a, b) => a + b, 0);
+      const pct = Math.min(100, Math.round((selectedCount / customBoxSize) * 100));
+
+      document.getElementById('boxCountLabel').innerText = `${selectedCount} of ${customBoxSize} cookies chosen`;
+      document.getElementById('boxPercentLabel').innerText = `${pct}%`;
+      document.getElementById('boxProgressBar').style.width = `${pct}%`;
+
+      const addBtn = document.getElementById('addBoxToCartBtn');
+      if (selectedCount === customBoxSize) {
+        addBtn.disabled = false;
+        addBtn.className = "w-full bg-brandCoral hover:bg-brandCoralHover text-white text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition flex items-center justify-center space-x-2 shadow-md cursor-pointer";
+      } else {
+        addBtn.disabled = true;
+        addBtn.className = "w-full bg-stone-300 text-stone-500 text-xs font-bold uppercase tracking-wider py-3.5 rounded-xl transition flex items-center justify-center space-x-2 cursor-not-allowed";
+      }
+    }
+
+    function addCustomBoxToCart() {
+      const price = customBoxSize === 12 ? 2500 : 4500;
+      const details = Object.entries(customBoxSelection).map(([k, v]) => `${v}x ${k}`).join(', ');
+      const boxName = `Custom ${customBoxSize} Box (${details})`;
+      
+      addToCart(boxName, price, 1);
+      setBoxTargetSize(customBoxSize);
+    }
+
+    // MENU FILTER & SEARCH
+    function filterMenu(category, btn) {
+      document.querySelectorAll('.menu-filter-btn').forEach(b => {
+        b.className = 'menu-filter-btn bg-white border border-stone-300 text-stone-700 text-xs font-bold py-2 px-4 rounded-full hover:bg-stone-50 transition';
+      });
+      btn.className = 'menu-filter-btn bg-brandTeal text-white text-xs font-bold py-2 px-4 rounded-full transition';
+
+      const items = document.querySelectorAll('.menu-item');
+      let visible = 0;
+      items.forEach(item => {
+        if (category === 'all' || item.classList.contains(category)) {
+          item.classList.remove('hidden');
+          visible++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      toggleNoResults(visible === 0);
+    }
+
+    function handleMenuSearch() {
+      const query = document.getElementById('menuSearchInput').value.toLowerCase();
+      const items = document.querySelectorAll('.menu-item');
+      let visible = 0;
+
+      items.forEach(item => {
+        const text = item.innerText.toLowerCase();
+        if (text.includes(query)) {
+          item.classList.remove('hidden');
+          visible++;
+        } else {
+          item.classList.add('hidden');
+        }
+      });
+
+      toggleNoResults(visible === 0);
+    }
+
+    function handleHeaderSearch(e) {
+      if (e.key === 'Enter') {
+        const val = e.target.value;
+        switchView('menu');
+        document.getElementById('menuSearchInput').value = val;
+        handleMenuSearch();
+      }
+    }
+
+    function resetMenuSearch() {
+      document.getElementById('menuSearchInput').value = '';
+      filterMenu('all', document.querySelectorAll('.menu-filter-btn')[0]);
+    }
+
+    function toggleNoResults(show) {
+      const grid = document.getElementById('menuGrid');
+      const noRes = document.getElementById('noResultsState');
+      if (show) {
+        grid.classList.add('hidden');
+        noRes.classList.remove('hidden');
+      } else {
+        grid.classList.remove('hidden');
+        noRes.classList.add('hidden');
+      }
+    }
+
+    // FORM HANDLERS
+    function handleCelebrationsSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('celebName').value;
+      const type = document.getElementById('celebType').value;
+      const guests = document.getElementById('celebGuests').value;
+      const date = document.getElementById('celebDate').value;
+      const notes = document.getElementById('celebNotes').value;
+
+      const msg = `👋 *Celebration Enquiry - Nairobi*\n\n*Name:* ${name}\n*Type:* ${type}\n*Guests:* ${guests}\n*Date:* ${date}\n*Notes:* ${notes}`;
+      window.open(`https://wa.me/254712345678?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    function handleContactNote(e) {
+      e.preventDefault();
+      alert("Thank you! Your note has been sent directly to Cora & team in Kilimani.");
+      e.target.reset();
+    }
+
+    function handleNewsletter(e) {
+      e.preventDefault();
+      alert("Welcome to the Cora & Crumb Nairobi inner circle!");
+      e.target.reset();
+    }
+
+    function toggleFaq(el) {
+      const p = el.querySelector('p');
+      p.classList.toggle('hidden');
+    }
+
+    // SHOWCASE PANEL
+    const showcaseItems = [
+      { cat: 'Cookies', name: 'Signature Chocolate Chunk', desc: 'Brown butter, dark chocolate chunks and a flake of sea salt. The one that started it all.', price: 300, img: 'photo-1558961363-fa8fdf82db35' },
+      { cat: 'Cookies', name: 'Ube Marble', desc: 'Soft, chewy and swirled with purple yam. Beautiful to give, hard to share.', price: 350, img: 'photo-1499636136210-6f4ee915583e' },
+      { cat: 'Boxes', name: 'The Gift Box', desc: 'A dozen handpicked cookies, wrapped by hand and ready to surprise someone.', price: 2500, img: 'photo-1618923850107-d1a234d7a73a' },
+      { cat: 'Celebrations', name: 'Celebration Spread', desc: 'Weddings, birthdays and office parties. Custom batches made to match your theme.', price: 4500, img: 'photo-1578985545062-69928b1d9587' },
+      { cat: 'Bakes', name: 'Warm From The Oven', desc: 'Small-batch bakes made fresh every morning in Kilimani.', price: 400, img: 'photo-1509440159596-0249088772ff' }
+    ];
+    let showcaseCat = 'All', showcaseIdx = 0;
+    const showcaseList = () => showcaseCat === 'All' ? showcaseItems : showcaseItems.filter(i => i.cat === showcaseCat);
+    const showcaseUrl = (id, w) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=${w}&q=80`;
+
+    function renderShowcase() {
+      const list = showcaseList();
+      showcaseIdx = (showcaseIdx + list.length) % list.length;
+      const item = list[showcaseIdx];
+      const img = document.getElementById('showcaseImg');
+      img.style.opacity = 0;
+      setTimeout(() => { img.src = showcaseUrl(item.img, 1000); img.alt = item.name; img.style.opacity = 1; }, 150);
+      document.getElementById('showcaseBadge').innerText = item.cat;
+      document.getElementById('showcaseName').innerText = item.name;
+      document.getElementById('showcaseDesc').innerText = item.desc;
+      document.getElementById('showcasePrice').innerText = 'KES ' + item.price.toLocaleString();
+      const cats = ['All', ...new Set(showcaseItems.map(i => i.cat))];
+      document.getElementById('showcaseTabs').innerHTML = cats.map(c =>
+        `<button onclick="showcaseSetCat('${c}')" class="text-xs font-bold py-2 px-4 rounded-full transition ${c === showcaseCat ? 'bg-brandTeal text-white' : 'bg-white border border-stone-300 text-stone-700 hover:bg-stone-50'}">${c}</button>`).join('');
+      document.getElementById('showcaseThumbs').innerHTML = list.map((it, i) =>
+        `<button onclick="showcaseIdx=${i};renderShowcase()" aria-label="${it.name}" class="shrink-0 w-16 h-16 rounded-xl overflow-hidden border-2 ${i === showcaseIdx ? 'border-brandCoral' : 'border-transparent opacity-70 hover:opacity-100'} transition"><img src="${showcaseUrl(it.img, 200)}" class="w-full h-full object-cover" alt=""></button>`).join('');
+    }
+    function showcaseSetCat(c) { showcaseCat = c; showcaseIdx = 0; renderShowcase(); }
+    function showcaseStep(d) { showcaseIdx += d; renderShowcase(); }
+    function showcaseAdd() { const it = showcaseList()[showcaseIdx]; addToCart(it.name, it.price, 1); }
+    renderShowcase();
+    setInterval(() => { if (!document.getElementById('view-home').classList.contains('hidden')) showcaseStep(1); }, 6000);
+
+    // INIT
+    renderBoxFlavors();
+  </script>
+</body>
+</html>
